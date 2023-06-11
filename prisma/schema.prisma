@@ -1,0 +1,111 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id         String   @id @default(uuid())
+  name       String
+  adm        Boolean  @default(false)
+  email      String   @unique
+  password   String
+  created_at DateTime @default(now())
+  cpf        String
+  Aluno      Aluno[]
+
+  @@map("usuarios")
+}
+
+model Aluno {
+  id           String              @id @default(uuid())
+  idade        Int
+  whatsapp     String
+  created_at   DateTime            @default(now())
+  id_situacao  String
+  situacao     SituacaoMensalidade @relation(fields: [id_situacao], references: [id])
+  id_user      String
+  user         Usuario             @relation(fields: [id_user], references: [id])
+  Evolucao     Evolucao[]
+  Movimentacao Movimentacao[]
+  Aula         Aula[]
+
+  @@map("alunos")
+}
+
+model Evolucao {
+  id         String   @id @default(uuid())
+  peso       Decimal
+  id_aluno   String
+  aluno      Aluno    @relation(fields: [id_aluno], references: [id])
+  created_at DateTime @default(now())
+
+  @@map("evolucoes")
+}
+
+model TipoMovimentacao {
+  id           String         @id @default(uuid())
+  descricao    String
+  status       String
+  Movimentacao Movimentacao[]
+
+  @@map("tiposMovimentacoes")
+}
+
+model Movimentacao {
+  id                  String           @id @default(uuid())
+  id_aluno            String
+  aluno               Aluno            @relation(fields: [id_aluno], references: [id])
+  id_tipoMovimentacao String
+  tipoMovimentacao    TipoMovimentacao @relation(fields: [id_tipoMovimentacao], references: [id])
+  valor               Decimal
+  data_pgto           DateTime
+  data_vencimento     DateTime
+
+  @@map("movimentacoes")
+}
+
+model SituacaoMensalidade {
+  id        String  @id @default(uuid())
+  descricao String
+  Aluno     Aluno[]
+
+  @@map("situacoesMensalidades")
+}
+
+model Academia {
+  id       String @id @default(uuid())
+  nome     String
+  endereco String
+  numero   Int
+  Aula     Aula[]
+
+  @@map("academias")
+}
+
+model Treino {
+  id        String @id @default(uuid())
+  descricao String
+  Aula      Aula[]
+
+  @@map("treinos")
+}
+
+model Aula {
+  id          String   @id @default(uuid())
+  data_aula   DateTime
+  id_academia String
+  academia    Academia @relation(fields: [id_academia], references: [id])
+  id_aluno    String
+  aluno       Aluno    @relation(fields: [id_aluno], references: [id])
+  id_treino   String
+  treino      Treino   @relation(fields: [id_treino], references: [id])
+
+  @@map("aulas")
+}
