@@ -10,11 +10,19 @@ export class AulasService {
   }
 
   async findAll() {
-    return await prismaClient.aula.findMany();
+    return await prismaClient.aula.findMany({include: {
+      academia: true,
+      aluno: {include: {user: true}},
+      treino: true
+    }});
   }
 
   async findOne(id: string) {
-    return await prismaClient.aula.findUnique({where: {id}});
+    return await prismaClient.aula.findUnique({where: {id}, include: {
+      academia: true,
+      aluno: {include: {user: true}},
+      treino: true
+    }});
   }
 
   async update(id: string, updateAulaDto: UpdateAulaDto) {
@@ -23,5 +31,15 @@ export class AulasService {
 
   async remove(id: string) {
     return prismaClient.aula.delete({where: {id}});
+  }
+
+  async findByAluno(id: string){
+    return prismaClient.aula.findMany({where: {
+      id_aluno: id
+    }, include: {
+      academia: true,
+      aluno: {include: {user: true}},
+      treino: true
+    }})
   }
 }

@@ -31,4 +31,9 @@ export class AulasController {
   remove(@Param('id') id: string) {
     return this.aulasService.remove(id);
   }
+
+  @Get(':aluno/aluno')
+  findByAluno(@Param('aluno') id: string) {
+    return this.aulasService.findByAluno(id);
+  }
 }

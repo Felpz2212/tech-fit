@@ -10,12 +10,19 @@ export class AlunosService {
   }
 
   async findAll() {
-    return await prismaClient.aluno.findMany();
+    return await prismaClient.aluno.findMany({
+      include: {
+        user: true
+      }
+    });
   }
 
   async findOne(id: string) {
     return await prismaClient.aluno.findUnique({where: {
       id
+    }, include: {
+      user: true,
+      situacao: true
     }});
   }
 
@@ -25,5 +32,14 @@ export class AlunosService {
 
   async remove(id: string) {
     return await prismaClient.aluno.delete({where: {id: id}});
+  }
+
+  async findByUser(id: string){
+    return await prismaClient.aluno.findFirst({where: {
+      id_user: id
+    }, include: {
+      user: true,
+      situacao: true
+    }});
   }
 }

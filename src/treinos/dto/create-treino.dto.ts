@@ -1,1 +1,4 @@
-export class CreateTreinoDto {}
+export class CreateTreinoDto {
+    nome: string;
+    descricao: string;
+}

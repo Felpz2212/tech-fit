@@ -29,9 +29,9 @@ model Aluno {
   whatsapp     String
   created_at   DateTime            @default(now())
   id_situacao  String
-  situacao     SituacaoMensalidade @relation(fields: [id_situacao], references: [id])
+  situacao     SituacaoMensalidade @relation(fields: [id_situacao], references: [id], onDelete: NoAction)
   id_user      String
-  user         Usuario             @relation(fields: [id_user], references: [id])
+  user         Usuario             @relation(fields: [id_user], references: [id], onDelete: Cascade)
   Evolucao     Evolucao[]
   Movimentacao Movimentacao[]
   Aula         Aula[]
@@ -61,7 +61,7 @@ model TipoMovimentacao {
 model Movimentacao {
   id                  String           @id @default(uuid())
   id_aluno            String
-  aluno               Aluno            @relation(fields: [id_aluno], references: [id])
+  aluno               Aluno            @relation(fields: [id_aluno], references: [id], onDelete: NoAction)
   id_tipoMovimentacao String
   tipoMovimentacao    TipoMovimentacao @relation(fields: [id_tipoMovimentacao], references: [id])
   valor               Decimal
@@ -91,6 +91,7 @@ model Academia {
 
 model Treino {
   id        String @id @default(uuid())
+  nome      String
   descricao String
   Aula      Aula[]
 
@@ -101,11 +102,11 @@ model Aula {
   id          String   @id @default(uuid())
   data_aula   DateTime
   id_academia String
-  academia    Academia @relation(fields: [id_academia], references: [id])
+  academia    Academia @relation(fields: [id_academia], references: [id], onDelete: NoAction)
   id_aluno    String
-  aluno       Aluno    @relation(fields: [id_aluno], references: [id])
+  aluno       Aluno    @relation(fields: [id_aluno], references: [id], onDelete: NoAction)
   id_treino   String
-  treino      Treino   @relation(fields: [id_treino], references: [id])
+  treino      Treino   @relation(fields: [id_treino], references: [id], onDelete: NoAction)
 
   @@map("aulas")
 }

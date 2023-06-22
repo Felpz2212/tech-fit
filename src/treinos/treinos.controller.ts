@@ -19,16 +19,16 @@ export class TreinosController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.treinosService.findOne(+id);
+    return this.treinosService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTreinoDto: UpdateTreinoDto) {
-    return this.treinosService.update(+id, updateTreinoDto);
+    return this.treinosService.update(id, updateTreinoDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.treinosService.remove(+id);
+    return this.treinosService.remove(id);
   }
 }

@@ -31,4 +31,9 @@ export class AlunosController {
   remove(@Param('id') id: string) {
     return this.alunosService.remove(id);
   }
+
+  @Get(':id/user')
+  findByUser(@Param('id') id: string) {
+    return this.alunosService.findByUser(id);
+  }
 }

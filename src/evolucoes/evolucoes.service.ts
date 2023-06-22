@@ -10,11 +10,15 @@ export class EvolucoesService {
   }
 
   async findAll() {
-    return await prismaClient.evolucao.findMany();
+    return await prismaClient.evolucao.findMany({include: {
+      aluno: true
+    }});
   }
 
   async findOne(id: string) {
-    return await prismaClient.evolucao.findUnique({where: {id: id}});
+    return await prismaClient.evolucao.findUnique({where: {id: id}, include: {
+      aluno: true
+    }});
   }
 
   async update(id: string, updateEvolucoeDto: UpdateEvolucoeDto) {
@@ -28,6 +32,8 @@ export class EvolucoesService {
   }
 
   async findClient(id: string){
-    return await prismaClient.evolucao.findMany({where: {id_aluno: id}})
+    return await prismaClient.evolucao.findMany({where: {id_aluno: id}, include: {
+      aluno: true
+    }})
   }
 }

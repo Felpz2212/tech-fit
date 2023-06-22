@@ -1,26 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTreinoDto } from './dto/create-treino.dto';
 import { UpdateTreinoDto } from './dto/update-treino.dto';
+import { prismaClient } from 'src/database/prismaClient';
 
 @Injectable()
 export class TreinosService {
-  create(createTreinoDto: CreateTreinoDto) {
-    return 'This action adds a new treino';
+  
+  async create(createTreinoDto: CreateTreinoDto) {
+    return await prismaClient.treino.create({data: createTreinoDto});
   }
 
-  findAll() {
-    return `This action returns all treinos`;
+  async findAll() {
+    return await prismaClient.treino.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} treino`;
+  async findOne(id: string) {
+    return await prismaClient.treino.findUnique({where: {
+      id: id
+    }});
   }
 
-  update(id: number, updateTreinoDto: UpdateTreinoDto) {
-    return `This action updates a #${id} treino`;
+  async update(id: string, updateTreinoDto: UpdateTreinoDto) {
+    return await prismaClient.treino.update({data: updateTreinoDto, where: {
+      id: id
+    }});
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} treino`;
+  async remove(id: string) {
+    return await prismaClient.treino.delete({where: {
+      id: id
+    }});
   }
 }
